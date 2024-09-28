@@ -11,8 +11,10 @@ Route::get('/', function () {
 //all admin routes.....
 
 Route::controller(AdminController::class)->prefix('admin')->group(function (){
-   Route::get('login','logIn')->name('admin.login');
+//   Route::get('login','logIn')->name('admin.login');
+   Route::match(['get','post'],'login','logIn')->name('admin.login');
    Route::middleware('admin')->group(function (){
        Route::get('dashboard','index')->name('admin.home');
+       Route::get('logout','logout')->name('admin.logout');
    });
 });
