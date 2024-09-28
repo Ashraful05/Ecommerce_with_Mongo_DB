@@ -16,6 +16,12 @@ class AdminController extends Controller
     {
         if($request->isMethod('post')){
 //            return $request->all();
+            $request->validate([
+               'email'=>'required|email|max:255',
+                'password'=>'required|min:4'
+            ],[
+                'email.email'=>'Valid email is required'
+            ]);
             if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->password])){
                 $notification = [
                     'alert-type'=>'success',
