@@ -39,7 +39,7 @@
             <form action="{{ route('admin.login') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Email">
+                    <input type="email" name="email" class="form-control" placeholder="Email" @if(isset($_cookie['email'])) value="{{ $_cookie['email'] }}" @endif>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <input type="password" name="password" class="form-control" placeholder="Password" @if(isset($_cookie['password'])) value="{{ $_cookie['password'] }}" @endif>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -57,7 +57,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
+                            <input type="checkbox" id="remember" name="remember_me" @if(isset($_cookie['email'])) checked @endif>
                             <label for="remember">
                                 Remember Me
                             </label>

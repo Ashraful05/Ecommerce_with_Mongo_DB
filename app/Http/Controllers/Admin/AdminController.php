@@ -23,6 +23,14 @@ class AdminController extends Controller
                 'email.email'=>'Valid email is required'
             ]);
             if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->password])){
+
+                if(!empty($_post['remember_me'])){
+                    setcookie(['email',$_post['email']],time()+3600);
+                    setcookie(['password',$_post['password'],time()+3600]);
+                }else{
+                    setcookie('email','');
+                    setcookie('password','');
+                }
                 $notification = [
                     'alert-type'=>'success',
                     'message'=>'Successfully LoggedIn!'
