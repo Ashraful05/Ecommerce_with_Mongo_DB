@@ -56,10 +56,33 @@ class AdminController extends Controller
 
     public function updatePassword(Request $request){
 //        $adminData = Admin::get();
-        return view('admin.update_password');
         if($request->isMethod('post')){
+            if(Hash::check($request->current_password,Auth::guard('admin')->user()->password)){
+                if($request->new_password == $request->confirm_password){
+                    Admin::where('email',Auth::guard('admin')->user()->email)->update(['password'=>Hash::make($request->new_password)]);
+                    $notification = [
+                        'alert-type'=>'success',
+                        'message'=>'Password is Changed Successfully!'
+                    ];
+                    return redirect()->back()->with($notification);
+                }else{
+                    $notification = [
+                        'alert-type'=>'error',
+                        'message'=>'New and Old Password does not match!'
+                    ];
+                    return redirect()->back()->with($notification);
+                }
 
+
+            }else{
+                $notification = [
+                    'alert-type'=>'error',
+                    'message'=>'Incorrect Current Password!'
+                ];
+                return redirect()->back()->with($notification);
+            }
         }
+        return view('admin.update_password');
     }
     public function passwordCheckUsingAjax(Request $request)
     {
