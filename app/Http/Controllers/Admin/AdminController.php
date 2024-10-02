@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -50,5 +51,13 @@ class AdminController extends Controller
     {
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
+    }
+
+    public function updatePassword(Request $request){
+//        $adminData = Admin::get();
+        return view('admin.update_password');
+        if($request->isMethod('post')){
+
+        }
     }
 }

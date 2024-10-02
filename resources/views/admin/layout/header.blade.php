@@ -12,6 +12,7 @@
             <a href="{{ route('admin.home') }}" class="nav-link">Home</a>
         </li>
 
+
     </ul>
 
     <!-- Right navbar links -->

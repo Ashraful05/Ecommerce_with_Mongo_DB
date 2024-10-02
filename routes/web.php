@@ -17,4 +17,5 @@ Route::controller(AdminController::class)->prefix('admin')->group(function (){
        Route::get('dashboard','index')->name('admin.home');
        Route::get('logout','logout')->name('admin.logout');
    });
+   Route::match(['get','post'],'update_password','updatePassword')->name('update.password');
 });
