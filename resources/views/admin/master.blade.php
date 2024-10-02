@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title')</title>
 
     <!-- Google Font: Source Sans Pro -->
@@ -85,11 +86,12 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('/') }}admin/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('/') }}admin/js/demo.js"></script>
+{{--<script src="{{ asset('/') }}admin/js/demo.js"></script>--}}
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('/') }}admin/js/pages/dashboard.js"></script>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script type="text/javascript" src="{{ asset('/') }}admin/js/custom.js"></script>
 
 <script>
     @if(Session::has('message'))

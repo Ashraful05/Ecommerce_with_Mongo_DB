@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Auth;
+use Hash;
 
 class AdminController extends Controller
 {
@@ -18,7 +19,7 @@ class AdminController extends Controller
         if($request->isMethod('post')){
 //            return $request->all();
             $request->validate([
-               'email'=>'required|email|max:255',
+                'email'=>'required|email|max:255',
                 'password'=>'required|min:4'
             ],[
                 'email.email'=>'Valid email is required'
@@ -58,6 +59,16 @@ class AdminController extends Controller
         return view('admin.update_password');
         if($request->isMethod('post')){
 
+        }
+    }
+    public function passwordCheckUsingAjax(Request $request)
+    {
+        if(Hash::check($request->current_password,Auth::guard('admin')->user()->password ) )
+        {
+            return "true";
+        }
+        else{
+            return "false";
         }
     }
 }

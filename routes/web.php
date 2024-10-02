@@ -18,4 +18,5 @@ Route::controller(AdminController::class)->prefix('admin')->group(function (){
        Route::get('logout','logout')->name('admin.logout');
    });
    Route::match(['get','post'],'update_password','updatePassword')->name('update.password');
+   Route::post('password/check/ajax','passwordCheckUsingAjax')->name('check_current_password_using_ajax');
 });
