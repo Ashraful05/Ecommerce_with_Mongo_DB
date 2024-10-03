@@ -94,4 +94,25 @@ class AdminController extends Controller
             return "false";
         }
     }
+    public function updateAdminDetails(Request $request)
+    {
+        if($request->isMethod('post')){
+
+            $request->validate([
+                'name'=>'required|alpha',
+                'mobile'=>'required|numeric'
+            ],[
+                'name.alpha'=>'Valid name is required',
+                'mobile.numeric'=>'Valid mobile is required'
+            ]);
+            Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,'mobile'=>$request->mobile]);
+            $notification = [
+                'alert-type'=>'success',
+                'message'=>'Admin Info updated!!'
+            ];
+            return redirect()->back()->with($notification);
+        }
+
+        return view('admin.update_admin_details');
+    }
 }
