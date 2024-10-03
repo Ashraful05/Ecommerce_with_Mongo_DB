@@ -1,6 +1,9 @@
 @extends('admin.master')
 @section('title','Update Admin Details')
 @section('main_content')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -36,7 +39,7 @@
                                 <div class="alert alert-danger">
                                     <ul>
                                         @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+                                            <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -58,8 +61,18 @@
                                         <input type="text" name="mobile" value="{{ Auth::guard('admin')->user()->mobile }}" class="form-control" id="mobile"  required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="confirm_password">Image</label>
+                                        <label for="image">Image</label>
                                         <input type="file" name="image" class="form-control" id="image" >
+{{--                                        @if(!empty(Auth::guard('admin')->user()->image))--}}
+{{--                                            <a target="_blank" href="{{ url('admin/images/photos/'.Auth::guard('admin')->user()->image) }}">View Image</a>--}}
+{{--                                            <input type="file" id="image" name="current_image" value="{{ Auth::guard('admin')->user()->image }}">--}}
+{{--                                        @endif--}}
+
+                                    </div>
+                                    <div class="form-group">
+
+                                        <img id="showImage" src="{{ !empty(Auth::guard('admin')->user()->image)?url('admin/images/photos/'.Auth::guard('admin')->user()->image):url('admin/images/no_image.jpg') }}" style="height: 100px;width: 100px;" alt="">
+
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
@@ -74,6 +87,20 @@
                 </div>
             </div>
         </section>
+
+
+
+        <script>
+            $(document).ready(function(){
+                $('#image').change(function(e){
+                    var reader = new FileReader();
+                    reader.onload = function(e){
+                        $('#showImage').attr('src',e.target.result);
+                    }
+                    reader.readAsDataURL(e.target.files['0']);
+                })
+            });
+        </script>
 
 @endsection
 

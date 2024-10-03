@@ -7,6 +7,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Auth;
 use Hash;
+use Intervention\Image\Facades\Image;
 
 class AdminController extends Controller
 {
@@ -55,7 +56,6 @@ class AdminController extends Controller
     }
 
     public function updatePassword(Request $request){
-//        $adminData = Admin::get();
         if($request->isMethod('post')){
             if(Hash::check($request->current_password,Auth::guard('admin')->user()->password)){
                 if($request->new_password == $request->confirm_password){
@@ -99,20 +99,56 @@ class AdminController extends Controller
         if($request->isMethod('post')){
 
             $request->validate([
-                'name'=>'required|alpha',
+//                'name'=>'required|alpha',
+                'name'=>'required',
                 'mobile'=>'required|numeric'
             ],[
-                'name.alpha'=>'Valid name is required',
+//                'name.alpha'=>'Valid name is required',
                 'mobile.numeric'=>'Valid mobile is required'
             ]);
-            Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,'mobile'=>$request->mobile]);
-            $notification = [
-                'alert-type'=>'success',
-                'message'=>'Admin Info updated!!'
-            ];
-            return redirect()->back()->with($notification);
-        }
 
+            if($request->hasFile('image')){
+                $image = $request->file('image');
+                @unlink(public_path('admin/images/photos/'.Auth::guard('admin')->user()->image));
+                if($image->isValid()){
+                    $imageName = rand(111,99999).'.'.$image->getClientOriginalExtension();
+                    $imagePath = 'admin/images/photos/'.$imageName;
+                    Image::make($image)->save($imagePath);
+                }
+                Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,
+                    'mobile'=>$request->mobile,'image'=>$imageName]);
+                $notification = [
+                    'alert-type'=>'success',
+                    'message'=>'Admin Info updated!!'
+                ];
+                return redirect()->back()->with($notification);
+
+            }else{
+                Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,
+                    'mobile'=>$request->mobile]);
+                $notification = [
+                    'alert-type'=>'success',
+                    'message'=>'Admin Info updated!!'
+                ];
+                return redirect()->back()->with($notification);
+            }
+//elseif (!empty($request->current_image)){
+//                $imageName = $request->current_image;
+//            }else{
+//                $imageName = '';
+//            }
+
+//            Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,
+//                'mobile'=>$request->mobile,'image'=>$imageName]);
+//            $notification = [
+//                'alert-type'=>'success',
+//                'message'=>'Admin Info updated!!'
+//            ];
+//            return redirect()->back()->with($notification);
+//        }
+
+
+        }
         return view('admin.update_admin_details');
     }
 }
