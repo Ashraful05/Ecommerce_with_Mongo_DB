@@ -17,6 +17,17 @@ class CmsController extends Controller
         return view('admin.pages.cms_page',compact('cmsPages'));
     }
 
+    public function updateCmsPageStatus(Request $request){
+        if($request->status == 'active'){
+            $status = 0;
+        }else{
+            $status = 1;
+        }
+        CmsPage::where('_id',$request->page_id)->update(['status'=>$status]);
+
+        return response()->json(['status'=>$status,'page_id'=>$request->page_id]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -36,7 +47,7 @@ class CmsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(CmsPage $cmsPage)
     {
         //
     }
@@ -44,7 +55,7 @@ class CmsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(CmsPage $cmsPage)
     {
         //
     }
@@ -52,7 +63,7 @@ class CmsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, CmsPage $cmsPage)
     {
         //
     }
@@ -60,7 +71,7 @@ class CmsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(CmsPage $cmsPage)
     {
         //
     }

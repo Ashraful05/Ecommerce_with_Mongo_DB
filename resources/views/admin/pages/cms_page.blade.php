@@ -40,15 +40,15 @@
                         <td>{{ $cmsPage->url }}</td>
                         <td>{{ $cmsPage->created_at }}</td>
                         <td>
-                            <a href="{{ route('cmsPage.edit',$cmsPage->id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
-                            <a href="{{ route('cmsPage.destroy',$cmsPage->id) }}" title="Delete"><i class="fas fa-trash"></i></a>&nbsp;&nbsp;
+                            <a href="{{ route('cmsPage.edit',$cmsPage->_id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
+                            <a href="{{ route('cmsPage.destroy',$cmsPage->_id) }}" title="Delete"><i class="fas fa-trash"></i></a>&nbsp;&nbsp;
                             @if($cmsPage->status == 1)
-                                <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$cmsPage->id}}" page_id="{{ $cmsPage->id }}">
-                                    <i class="fas fa-toggle-on" aria-hidden="true" status="Active"></i>
+                                <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$cmsPage->_id}}" page_id="{{ $cmsPage->_id }}">
+                                    <i class="fas fa-toggle-on" aria-hidden="true" status="active"></i>
                                 </a>
                             @else
-                                <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$cmsPage->id}}" page_id="{{ $cmsPage->id }}">
-                                    <i class="fas fa-toggle-off" aria-hidden="true" status="Inactive"></i>
+                                <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$cmsPage->_id}}" page_id="{{ $cmsPage->_id }}">
+                                    <i class="fas fa-toggle-off" aria-hidden="true" status="inactive"></i>
                                 </a>
                             @endif
                         </td>

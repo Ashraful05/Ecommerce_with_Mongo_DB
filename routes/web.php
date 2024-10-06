@@ -23,6 +23,7 @@ Route::controller(AdminController::class)->prefix('admin')->group(function (){
 
        Route::match(['get','post'],'update_details','updateAdminDetails')->name('update.admin.details');
        Route::resource('cmsPage',CmsController::class);
+       Route::post('update_cms_page_status',[CmsController::class,'updateCmsPageStatus']);
    });
 
 });
