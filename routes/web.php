@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CmsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,7 @@ Route::controller(AdminController::class)->prefix('admin')->group(function (){
        Route::post('password/check/ajax','passwordCheckUsingAjax')->name('check_current_password_using_ajax');
 
        Route::match(['get','post'],'update_details','updateAdminDetails')->name('update.admin.details');
+       Route::resource('cmsPage',CmsController::class);
    });
 
 });

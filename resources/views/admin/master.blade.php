@@ -89,9 +89,21 @@
 {{--<script src="{{ asset('/') }}admin/js/demo.js"></script>--}}
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('/') }}admin/js/pages/dashboard.js"></script>
+<script src="{{ asset('/') }}admin/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="{{ asset('/') }}admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{ asset('/') }}admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script type="text/javascript" src="{{ asset('/') }}admin/js/custom.js"></script>
+
+<script>
+    $(function () {
+        $("#cmspages").DataTable({
+
+        });
+
+    });
+</script>
 
 <script>
     @if(Session::has('message'))

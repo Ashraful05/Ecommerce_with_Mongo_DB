@@ -67,6 +67,12 @@
                                 <p>SubAdmins</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('cmsPage.index') }}" class="nav-link {{ Request::is('admin/cmsPage')?'active':'' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>CMS Pages</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
