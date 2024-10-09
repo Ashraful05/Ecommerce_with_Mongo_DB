@@ -21,6 +21,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">CMS Pages</h3>
+                <a href="{{ route('cmsPage.create') }}" class="btn btn-primary" style="float: right" title="Add CMS Page"><i class="fas fa-plus-circle"></i></a>
             </div>
             <!-- /.card-header -->
             <div class="card-body">

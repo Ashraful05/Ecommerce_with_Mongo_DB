@@ -31,9 +31,9 @@ class CmsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CmsPage $cmsPage)
     {
-        //
+        return view('admin.pages.form',compact('cmsPage'));
     }
 
     /**
@@ -57,7 +57,7 @@ class CmsController extends Controller
      */
     public function edit(CmsPage $cmsPage)
     {
-        //
+        return view('admin.pages.form',compact('cmsPage'));
     }
 
     /**
