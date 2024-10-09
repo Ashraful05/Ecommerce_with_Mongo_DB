@@ -41,7 +41,21 @@ class CmsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'title'=>'required',
+           'url'=>'required'
+        ]);
+        CmsPage::create([
+            'title'=>$request->title,
+            'url'=>$request->url,
+            'description'=>$request->description,
+            'status'=>1
+        ]);
+        $notification = [
+          'alert-type'=>'success',
+          'message'=>'Page Created Successfully!!'
+        ];
+        return redirect()->route('cmsPage.index')->with($notification);
     }
 
     /**
@@ -65,7 +79,16 @@ class CmsController extends Controller
      */
     public function update(Request $request, CmsPage $cmsPage)
     {
-        //
+        $request->validate([
+            'title'=>'required',
+            'url'=>'required'
+        ]);
+        $cmsPage->update($request->all());
+        $notification = [
+            'alert-type'=>'info',
+            'message'=>'Page Updated Successfully!!'
+        ];
+        return redirect()->route('cmsPage.index')->with($notification);
     }
 
     /**

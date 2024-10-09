@@ -63,11 +63,11 @@
                                             <div class="card-body">
                                                 <div class="form-group">
                                                     <label for="title">Title</label>
-                                                    <input type="text" name="title" value="{{ old('title',$cmsPage->title) }}" class="form-control" id="title" required>
+                                                    <input type="text" name="title" value="{{ old('title',$cmsPage->title) }}" class="form-control" id="title" >
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="url">URL</label>
-                                                    <input type="text" name="url" value="{{ old('url',$cmsPage->url) }}" class="form-control" id="url" required>
+                                                    <input type="text" name="url" value="{{ old('url',$cmsPage->url) }}" class="form-control" id="url" >
                                                     <span id="verifyCurrentPassword"></span>
                                                 </div>
                                                 <div class="form-group">
