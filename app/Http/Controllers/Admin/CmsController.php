@@ -96,6 +96,11 @@ class CmsController extends Controller
      */
     public function destroy(CmsPage $cmsPage)
     {
-        //
+        $cmsPage->delete();
+        $notification = [
+            'alert-type'=>'error',
+            'message'=>'cms page deleted'
+        ];
+        return redirect()->route('cmsPage.index')->with($notification);
     }
 }

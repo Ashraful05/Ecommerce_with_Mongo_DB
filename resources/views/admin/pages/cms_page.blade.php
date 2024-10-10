@@ -42,7 +42,12 @@
                         <td>{{ $cmsPage->created_at }}</td>
                         <td>
                             <a href="{{ route('cmsPage.edit',$cmsPage->_id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
-                            <a href="{{ route('cmsPage.destroy',$cmsPage->_id) }}" title="Delete"><i class="fas fa-trash"></i></a>&nbsp;&nbsp;
+                            <form action="{{ route('cmsPage.destroy',$cmsPage->_id) }}" method="post" id="">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" onclick="return confirm('Are you sure to delete?')"><i class="fas fa-trash"></i></button>
+                            </form>
+{{--                            <a href="{{ route('cmsPage.destroy',$cmsPage->_id) }}" title="Delete"><i class="fas fa-trash"></i></a>&nbsp;&nbsp;--}}
                             @if($cmsPage->status == 1)
                                 <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$cmsPage->_id}}" page_id="{{ $cmsPage->_id }}">
                                     <i class="fas fa-toggle-on" aria-hidden="true" status="active"></i>
