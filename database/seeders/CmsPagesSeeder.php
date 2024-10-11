@@ -23,6 +23,24 @@ class CmsPagesSeeder extends Seeder
             'status'=>1
         ]);
         CmsPage::create([
+            'title'=>'Contact Us',
+            'description'=>'Content is coming soon',
+            'url'=>'contact-us',
+            'meta-title'=>'Contact Us',
+            'meta_description'=>'Contact Us Content',
+            'meta_keywords'=>'contact us',
+            'status'=>1
+        ]);
+        CmsPage::create([
+            'title'=>'Terms & Conditions',
+            'description'=>'Content is coming soon',
+            'url'=>'terms-conditions',
+            'meta-title'=>'Terms & Conditions',
+            'meta_description'=>'Terms & Conditions Content',
+            'meta_keywords'=>'terms conditions',
+            'status'=>1
+        ]);
+        CmsPage::create([
             'title'=>'Terms & Conditions',
             'description'=>'Content is coming soon',
             'url'=>'terms-conditions',

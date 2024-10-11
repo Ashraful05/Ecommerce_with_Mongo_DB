@@ -1,5 +1,5 @@
 @extends('admin.master')
-@section('title','Home Page')
+@section('title','CMS Page')
 @section('main_content')
     <div class="content-wrapper">
         <div class="content-header">
@@ -28,6 +28,7 @@
                 <table id="cmspages" class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                        <th>Sl.</th>
                         <th>Title</th>
                         <th>URL</th>
                         <th>Created On</th>
@@ -35,19 +36,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($cmsPages as $cmsPage)
+                    @foreach($cmsPages as $row => $cmsPage)
                     <tr>
+                        <td> {{ ++$row }} </td>
                         <td>{{ $cmsPage->title }}</td>
                         <td>{{ $cmsPage->url }}</td>
                         <td>{{ $cmsPage->created_at }}</td>
                         <td>
-                            <a href="{{ route('cmsPage.edit',$cmsPage->_id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
-                            <form action="{{ route('cmsPage.destroy',$cmsPage->_id) }}" method="post" id="">
+                            <a href="{{ route('cmsPage.edit',$cmsPage->_id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;
+
+                            <form id="delete-cms-form_{{$cmsPage->id}}" action="{{route('cmsPage.destroy',$cmsPage->id)}}" method="POST">
                                 @csrf
-                                @method('delete')
-                                <button type="submit" onclick="return confirm('Are you sure to delete?')"><i class="fas fa-trash"></i></button>
+                                @method('DELETE')
+                                <button type="submit" id="delete-cms" recordId="{{ $cmsPage->id }}"><i class="fas fa-trash"></i></button>
                             </form>
-{{--                            <a href="{{ route('cmsPage.destroy',$cmsPage->_id) }}" title="Delete"><i class="fas fa-trash"></i></a>&nbsp;&nbsp;--}}
+
+
                             @if($cmsPage->status == 1)
                                 <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$cmsPage->_id}}" page_id="{{ $cmsPage->_id }}">
                                     <i class="fas fa-toggle-on" aria-hidden="true" status="active"></i>

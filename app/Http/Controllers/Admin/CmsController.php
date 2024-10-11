@@ -94,13 +94,25 @@ class CmsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CmsPage $cmsPage)
+//    public function destroy(CmsPage $cmsPage)
+    public function destroy($id)
     {
-        $cmsPage->delete();
+        CmsPage::destroy($id);
+//        $cmsPage->delete();
+
         $notification = [
             'alert-type'=>'error',
             'message'=>'cms page deleted'
         ];
-        return redirect()->route('cmsPage.index')->with($notification);
+        return redirect()->back()->with($notification);
     }
+
+//    public function destroy(Request $request){
+//        CmsPage::find($request->id)->delete();
+//        $notification = [
+//            'alert-type'=>'error',
+//            'message'=>'cms page deleted'
+//        ];
+//        return redirect()->back()->with($notification);
+//    }
 }
