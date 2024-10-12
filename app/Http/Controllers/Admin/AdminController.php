@@ -154,7 +154,28 @@ class AdminController extends Controller
     public function subAdmin()
     {
         $subAdmins = Admin::where('type','subadmin')->get();
-//        return $subAdmins;
         return view('admin.subadmins.subadmin',compact('subAdmins'));
     }
+
+    public function updateSubAdminPageStatus(Request $request){
+        if($request->status == 'active'){
+            $status = 0;
+        }else{
+            $status = 1;
+        }
+        Admin::where('_id',$request->page_id)->update(['status'=>$status]);
+
+        return response()->json(['status'=>$status,'page_id'=>$request->page_id]);
+    }
+    public function deleteSubAdmin($id)
+    {
+        Admin::findOrFail($id)->delete();
+
+        $notification = [
+            'alert-type'=>'error',
+            'message'=>'Sub Admin Info deleted!!'
+        ];
+        return redirect()->back()->with($notification);
+    }
+
 }

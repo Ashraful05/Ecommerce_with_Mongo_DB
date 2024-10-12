@@ -20,7 +20,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">CMS Pages</h3>
+                <h3 class="card-title">Sub Admin Pages</h3>
                 <a href="{{ route('cmsPage.create') }}" class="btn btn-primary" style="float: right" title="Add CMS Page"><i class="fas fa-plus-circle"></i></a>
             </div>
             <!-- /.card-header -->
@@ -47,19 +47,19 @@
                             <td>
                                 <a href="{{ route('cmsPage.edit',$subAdmin->_id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;
 
-                                <form id="delete-cms-form_{{$subAdmin->id}}" action="{{route('cmsPage.destroy',$subAdmin->id)}}" method="POST">
+                                <form id="delete-cms-form_{{$subAdmin->_id}}" action="{{route('subadmin.delete',$subAdmin->_id)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" id="delete-cms" recordId="{{ $subAdmin->id }}"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" id="delete-cms" recordId="{{ $subAdmin->_id }}"><i class="fas fa-trash"></i></button>
                                 </form>
 
 
                                 @if($subAdmin->status == 1)
-                                    <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$subAdmin->_id}}" page_id="{{ $subAdmin->_id }}">
+                                    <a href="javascript:void(0)" class="updateSubAdminPageStatus" id="page-{{$subAdmin->_id}}" page_id="{{ $subAdmin->_id }}">
                                         <i class="fas fa-toggle-on" aria-hidden="true" status="active"></i>
                                     </a>
                                 @else
-                                    <a href="javascript:void(0)" class="updateCmsPageStatus" id="page-{{$subAdmin->_id}}" page_id="{{ $subAdmin->_id }}">
+                                    <a href="javascript:void(0)" class="updateSubAdminPageStatus" id="page-{{$subAdmin->_id}}" page_id="{{ $subAdmin->_id }}">
                                         <i class="fas fa-toggle-off" aria-hidden="true" status="inactive"></i>
                                     </a>
                                 @endif

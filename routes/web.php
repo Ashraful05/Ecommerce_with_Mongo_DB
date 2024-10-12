@@ -24,6 +24,8 @@ Route::prefix('admin')->group(function (){
 
             Route::match(['get','post'],'update_details','updateAdminDetails')->name('update.admin.details');
             Route::get('subadmins',[AdminController::class,'subAdmin'])->name('subadmins');
+            Route::post('update_sub_admin_page_status',[AdminController::class,'updateSubAdminPageStatus']);
+            Route::delete('subadmin/delete/{id}',[AdminController::class,'deleteSubAdmin'])->name('subadmin.delete');
     });
 
         Route::middleware('admin')->group(function(){

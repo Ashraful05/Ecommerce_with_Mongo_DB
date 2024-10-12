@@ -44,6 +44,27 @@ $(document).on('click','.updateCmsPageStatus',function (){
     });
 });
 
+$(document).on('click','.updateSubAdminPageStatus',function (){
+    var status = $(this).children('i').attr('status');
+    var page_id = $(this).attr('page_id');
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: 'post',
+        url: 'update_sub_admin_page_status',
+        data: {status:status,page_id:page_id},
+        success:function (response){
+            if(response['status']==0){
+                $("#page-"+page_id).html('<i class="fas fa-toggle-off" style="color: grey" aria-hidden="true" status="inactive"></i>');
+            }else{
+                $("#page-"+page_id).html('<i class="fas fa-toggle-on" aria-hidden="true" status="active"></i>');
+            }
+        },
+        error:function (){
+            alert('error');
+        }
+    });
+});
+
 // $(".confirmDelete").click(function (){
 //
 //     Swal.fire({
@@ -74,8 +95,6 @@ $(document).on('click','#delete-cms', function (e) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            // $('#delete-cms-form').submit().on(recordId);
-            // $('#delete-cms-form').on(recordId).submit();
             $('#delete-cms-form_'+recordId).submit();
             Swal.fire({
                 title: "Deleted!",
