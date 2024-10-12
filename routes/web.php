@@ -23,6 +23,7 @@ Route::prefix('admin')->group(function (){
             Route::post('password/check/ajax','passwordCheckUsingAjax')->name('check_current_password_using_ajax');
 
             Route::match(['get','post'],'update_details','updateAdminDetails')->name('update.admin.details');
+            Route::get('subadmins',[AdminController::class,'subAdmin'])->name('subadmins');
     });
 
         Route::middleware('admin')->group(function(){

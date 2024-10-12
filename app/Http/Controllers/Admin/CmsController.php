@@ -98,7 +98,6 @@ class CmsController extends Controller
     public function destroy($id)
     {
         CmsPage::destroy($id);
-//        $cmsPage->delete();
 
         $notification = [
             'alert-type'=>'error',

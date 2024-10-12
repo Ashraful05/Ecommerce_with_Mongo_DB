@@ -62,7 +62,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./index3.html" class="nav-link">
+                            <a href="{{ route('subadmins') }}" class="nav-link {{ Request::is('admin/subadmins')?'active':'' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>SubAdmins</p>
                             </a>
