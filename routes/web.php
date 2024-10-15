@@ -23,22 +23,21 @@ Route::prefix('admin')->group(function (){
             Route::post('password/check/ajax','passwordCheckUsingAjax')->name('check_current_password_using_ajax');
 
             Route::match(['get','post'],'update_details','updateAdminDetails')->name('update.admin.details');
-            Route::get('subadmins',[AdminController::class,'subAdmin'])->name('subadmins');
-            Route::post('update_sub_admin_page_status',[AdminController::class,'updateSubAdminPageStatus']);
-            Route::delete('subadmin/delete/{id}',[AdminController::class,'deleteSubAdmin'])->name('subadmin.delete');
-//            Route::match(['get','post'],'add/edit/subadmin/{id?}',[AdminController::class,'addEditSubAdmin'])->name('add.edit.subadmin');
-            Route::get('add/subadmin',[AdminController::class,'addSubAdmin'])->name('add.sub.admin');
-            Route::post('save/subadmin',[AdminController::class,'saveSubAdmin'])->name('save.sub.admin');
-            Route::get('edit/subadmin/{id}',[AdminController::class,'editSubAdmin'])->name('edit.sub.admin');
-            Route::post('update/subadmin/{id}',[AdminController::class,'updateSubAdminData'])->name('update.sub.admin');
+            Route::get('subadmins','subAdmin')->name('subadmins');
+            Route::post('update_sub_admin_page_status','updateSubAdminPageStatus');
+
+            Route::delete('subadmin/delete/{id}','deleteSubAdmin')->name('subadmin.delete');
+            Route::get('add/subadmin','addSubAdmin')->name('add.sub.admin');
+            Route::post('save/subadmin','saveSubAdmin')->name('save.sub.admin');
+            Route::get('edit/subadmin/{id}','editSubAdmin')->name('edit.sub.admin');
+            Route::post('update/subadmin/{id}','updateSubAdminData')->name('update.sub.admin');
+            Route::match(['get','post'],'update/role/{id}','updateAdminRole')->name('update.role');
     });
-
-        Route::middleware('admin')->group(function(){
-            Route::resource('cmsPage',CmsController::class);
-            Route::post('update_cms_page_status',[CmsController::class,'updateCmsPageStatus']);
-        });
-
    });
+    Route::middleware('admin')->group(function(){
+        Route::resource('cmsPage',CmsController::class);
+        Route::post('update_cms_page_status',[CmsController::class,'updateCmsPageStatus']);
+    });
 
 
 });

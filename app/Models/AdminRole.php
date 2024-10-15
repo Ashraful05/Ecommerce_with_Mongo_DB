@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Mongodb\Laravel\Eloquent\Model as Model;
 
-class CmsPage extends Model
+class AdminRole extends Model
 {
     use HasFactory;
 

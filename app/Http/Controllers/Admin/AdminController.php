@@ -134,22 +134,6 @@ class AdminController extends Controller
                 ];
                 return redirect()->back()->with($notification);
             }
-//elseif (!empty($request->current_image)){
-//                $imageName = $request->current_image;
-//            }else{
-//                $imageName = '';
-//            }
-
-//            Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,
-//                'mobile'=>$request->mobile,'image'=>$imageName]);
-//            $notification = [
-//                'alert-type'=>'success',
-//                'message'=>'Admin Info updated!!'
-//            ];
-//            return redirect()->back()->with($notification);
-//        }
-
-
         }
         return view('admin.update_admin_details');
     }
@@ -185,66 +169,6 @@ class AdminController extends Controller
         return redirect()->back()->with($notification);
     }
 
-//    public function addEditSubAdmin(Request $request,$id=null)
-//    {
-//        $request->validate([
-//            'name'=>'required',
-//            'mobile'=>'required|numeric',
-//            'image' => 'required|image|mimes:jpeg,jpg,png,gif'
-//        ]);
-//        if($id == ''){
-//            $subAdminData = new Admin();
-//        }else{
-//            $subAdminData = Admin::findOrFail($id);
-//        }
-//
-//        if($request->hasFile('image')){
-//            $image = $request->file('image');
-//            (Auth::guard('admin')->user()->image!='')?(@unlink(public_path('admin/images/sub_admin_photos/'.Auth::guard('admin')->user()->image))):'';
-////                @unlink(public_path('admin/images/sub_admin_photos/'.Auth::guard('admin')->user()->image));
-//            if($image->isValid()){
-//                $imageName = rand(111,99999).'.'.$image->getClientOriginalExtension();
-//                $imagePath = 'admin/images/sub_admin_photos/'.$imageName;
-//                Image::make($image)->save($imagePath);
-//            }
-//        }
-//        if($request->isMethod('post')){
-////            return $request->all();
-////            if($id==''){
-////                $subAdminCount = Admin::where('email',$request->subadmin_email)->count();
-////                if($subAdminCount>0){
-////                    return redirect()->route('subadmins');
-////                }
-////            }
-//
-//            Admin::create([
-//                'name'=>$request->name,
-//                'mobile'=>$request->mobile,
-//                'email'=>$request->email,
-//                'password'=>Hash::make($request->password),
-//                'type'=>'subadmin',
-//                'status'=>1,
-//                'image'=>$imageName
-//            ]);
-//            $notification = [
-//              'alert-type'=>'success',
-//              'message'=>'Sub Admin Info Saved!!'
-//            ];
-//            return redirect()->route('subadmins')->with($notification);
-//        }else if ($request->isMethod('post') && $id!=''){
-//            $subAdminData = Admin::find($id);
-//            $subAdminData->update([
-//                'name'=>$request->name,
-//                'mobile'=>$request->mobile,
-//                'email'=>$request->email,
-//                'password'=>Hash::make($request->password),
-//                'type'=>'subadmin',
-//                'status'=>1,
-//                'image'=>$imageName
-//            ]);
-//        }
-//        return view('admin.subadmins.add_edit_sub_admin',compact('subAdminData'));
-//    }
     public function addSubAdmin()
     {
         return view('admin.subadmins.add_sub_admin');
@@ -258,7 +182,6 @@ class AdminController extends Controller
             'image'=>'required|image|mimes:jpg,jpeg,png,gif,webp',
             'email'=>'required|unique:admins'
         ],[
-//                'name.alpha'=>'Valid name is required',
             'mobile.numeric'=>'Valid mobile is required',
             'email.required'=>'Unique email is required',
         ]);
@@ -272,9 +195,6 @@ class AdminController extends Controller
 
                 Image::make($image)->save($imagePath);
             }
-//            Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,
-//                'mobile'=>$request->mobile,'image'=>$imageName]);
-
         }
         Admin::create([
            'name'=>$request->name,
@@ -304,18 +224,14 @@ class AdminController extends Controller
         $request->validate([
             'name'=>'required',
             'mobile'=>'required|numeric',
-//            'email'=>'required|unique:admins'
-//            'image'=>'required|mimes:jpg,png,svg,jpeg',
         ],[
             'mobile.numeric'=>'Valid mobile is required',
-//            'email.required'=>'Unique email is required',
         ]);
         if ($request->hasFile('image')) {
             if(!empty($request->old_image)){
                 @unlink(public_path('admin/images/sub_admin_photos/'.$adminData->image));
             }
             $image = $request->file('image');
-//            @unlink(public_path('admin/images/sub_admin_photos/'.Auth::guard('admin')->user()->image));
             if ($image->isValid()) {
                 $imageName = rand(111, 99999).'.'.$image->getClientOriginalExtension();
                 $imagePath = public_path('admin/images/sub_admin_photos/'.$imageName);
@@ -323,7 +239,6 @@ class AdminController extends Controller
             }
             $adminData->update([
                 'name'=>$request->name,
-//                'email'=>$request->email,
                 'mobile'=>$request->mobile,
                 'password'=>Hash::make($request->password),
                 'image'=>$imageName,
@@ -333,7 +248,6 @@ class AdminController extends Controller
         }else{
             $adminData->update([
                 'name'=>$request->name,
-//                'email'=>$request->email,
                 'mobile'=>$request->mobile,
                 'password'=>Hash::make($request->password),
                 'status'=>1,
@@ -346,6 +260,11 @@ class AdminController extends Controller
             'message'=>'Sub Admin Info updated!!'
         ];
         return redirect()->route('subadmins')->with($notification);
+    }
+
+    public function updateAdminRole(Request $request,$id)
+    {
+
     }
 
 }
