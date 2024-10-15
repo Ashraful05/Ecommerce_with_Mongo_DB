@@ -21,7 +21,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Sub Admin Pages</h3>
-                <a href="{{ route('cmsPage.create') }}" class="btn btn-primary" style="float: right" title="Add CMS Page"><i class="fas fa-plus-circle"></i></a>
+                <a href="{{ route('add.sub.admin') }}" class="btn btn-primary" style="float: right" title="Add SubAdmin Page"><i class="fas fa-plus-circle"></i></a>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -43,9 +43,11 @@
                             <td>{{ $subAdmin->name }}</td>
                             <td>{{ $subAdmin->email }}</td>
                             <td>{{ $subAdmin->mobile }}</td>
-                            <td>{{ $subAdmin->mobile }}</td>
                             <td>
-                                <a href="{{ route('cmsPage.edit',$subAdmin->_id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;
+                                <img src="{{ !empty($subAdmin->image)?asset('admin/images/sub_admin_photos/'.$subAdmin->image):url('admin/images/no_image.jpg') }}" style="height: 100px;width: 100px;" alt="">
+                            </td>
+                            <td>
+                                <a href="{{ route('edit.sub.admin',$subAdmin->_id) }}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;
 
                                 <form id="delete-cms-form_{{$subAdmin->_id}}" action="{{route('subadmin.delete',$subAdmin->_id)}}" method="POST">
                                     @csrf

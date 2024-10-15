@@ -26,6 +26,11 @@ Route::prefix('admin')->group(function (){
             Route::get('subadmins',[AdminController::class,'subAdmin'])->name('subadmins');
             Route::post('update_sub_admin_page_status',[AdminController::class,'updateSubAdminPageStatus']);
             Route::delete('subadmin/delete/{id}',[AdminController::class,'deleteSubAdmin'])->name('subadmin.delete');
+//            Route::match(['get','post'],'add/edit/subadmin/{id?}',[AdminController::class,'addEditSubAdmin'])->name('add.edit.subadmin');
+            Route::get('add/subadmin',[AdminController::class,'addSubAdmin'])->name('add.sub.admin');
+            Route::post('save/subadmin',[AdminController::class,'saveSubAdmin'])->name('save.sub.admin');
+            Route::get('edit/subadmin/{id}',[AdminController::class,'editSubAdmin'])->name('edit.sub.admin');
+            Route::post('update/subadmin/{id}',[AdminController::class,'updateSubAdminData'])->name('update.sub.admin');
     });
 
         Route::middleware('admin')->group(function(){

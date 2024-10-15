@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use Auth;
+//use Auth;
 use Hash;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+use mysql_xdevapi\CollectionModify;
 
 class AdminController extends Controller
 {
@@ -25,7 +27,7 @@ class AdminController extends Controller
             ],[
                 'email.email'=>'Valid email is required'
             ]);
-            if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->password])){
+            if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->password,'status'=>1])){
 
                 if(!empty($_post['remember_me'])){
                     setcookie(['email',$_post['email']],time()+3600);
@@ -154,6 +156,7 @@ class AdminController extends Controller
     public function subAdmin()
     {
         $subAdmins = Admin::where('type','subadmin')->get();
+//        return $subAdmins;
         return view('admin.subadmins.subadmin',compact('subAdmins'));
     }
 
@@ -169,13 +172,180 @@ class AdminController extends Controller
     }
     public function deleteSubAdmin($id)
     {
-        Admin::findOrFail($id)->delete();
+        $subAdminData = Admin::findOrFail($id);
+
+
+        @unlink(public_path('admin/images/sub_admin_photos/'.$subAdminData->image));
+        $subAdminData->delete();
 
         $notification = [
             'alert-type'=>'error',
             'message'=>'Sub Admin Info deleted!!'
         ];
         return redirect()->back()->with($notification);
+    }
+
+//    public function addEditSubAdmin(Request $request,$id=null)
+//    {
+//        $request->validate([
+//            'name'=>'required',
+//            'mobile'=>'required|numeric',
+//            'image' => 'required|image|mimes:jpeg,jpg,png,gif'
+//        ]);
+//        if($id == ''){
+//            $subAdminData = new Admin();
+//        }else{
+//            $subAdminData = Admin::findOrFail($id);
+//        }
+//
+//        if($request->hasFile('image')){
+//            $image = $request->file('image');
+//            (Auth::guard('admin')->user()->image!='')?(@unlink(public_path('admin/images/sub_admin_photos/'.Auth::guard('admin')->user()->image))):'';
+////                @unlink(public_path('admin/images/sub_admin_photos/'.Auth::guard('admin')->user()->image));
+//            if($image->isValid()){
+//                $imageName = rand(111,99999).'.'.$image->getClientOriginalExtension();
+//                $imagePath = 'admin/images/sub_admin_photos/'.$imageName;
+//                Image::make($image)->save($imagePath);
+//            }
+//        }
+//        if($request->isMethod('post')){
+////            return $request->all();
+////            if($id==''){
+////                $subAdminCount = Admin::where('email',$request->subadmin_email)->count();
+////                if($subAdminCount>0){
+////                    return redirect()->route('subadmins');
+////                }
+////            }
+//
+//            Admin::create([
+//                'name'=>$request->name,
+//                'mobile'=>$request->mobile,
+//                'email'=>$request->email,
+//                'password'=>Hash::make($request->password),
+//                'type'=>'subadmin',
+//                'status'=>1,
+//                'image'=>$imageName
+//            ]);
+//            $notification = [
+//              'alert-type'=>'success',
+//              'message'=>'Sub Admin Info Saved!!'
+//            ];
+//            return redirect()->route('subadmins')->with($notification);
+//        }else if ($request->isMethod('post') && $id!=''){
+//            $subAdminData = Admin::find($id);
+//            $subAdminData->update([
+//                'name'=>$request->name,
+//                'mobile'=>$request->mobile,
+//                'email'=>$request->email,
+//                'password'=>Hash::make($request->password),
+//                'type'=>'subadmin',
+//                'status'=>1,
+//                'image'=>$imageName
+//            ]);
+//        }
+//        return view('admin.subadmins.add_edit_sub_admin',compact('subAdminData'));
+//    }
+    public function addSubAdmin()
+    {
+        return view('admin.subadmins.add_sub_admin');
+    }
+    public function saveSubAdmin(Request $request)
+    {
+        $request->validate([
+//                'name'=>'required|alpha',
+            'name'=>'required',
+            'mobile'=>'required|numeric',
+            'image'=>'required|image|mimes:jpg,jpeg,png,gif,webp',
+            'email'=>'required|unique:admins'
+        ],[
+//                'name.alpha'=>'Valid name is required',
+            'mobile.numeric'=>'Valid mobile is required',
+            'email.required'=>'Unique email is required',
+        ]);
+
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            if($image->isValid()){
+                $imageName = rand(111,99999).'.'.$image->getClientOriginalExtension();
+
+                $imagePath = public_path('admin/images/sub_admin_photos/'.$imageName);
+
+                Image::make($image)->save($imagePath);
+            }
+//            Admin::where('email',Auth::guard('admin')->user()->email)->update(['name'=>$request->name,
+//                'mobile'=>$request->mobile,'image'=>$imageName]);
+
+        }
+        Admin::create([
+           'name'=>$request->name,
+           'email'=>$request->email,
+           'mobile'=>$request->mobile,
+           'password'=>Hash::make($request->password),
+            'image'=>$imageName,
+            'status'=>1,
+            'type'=>'subadmin'
+        ]);
+        $notification = [
+            'alert-type'=>'success',
+            'message'=>'Admin Info updated!!'
+        ];
+        return redirect()->route('subadmins')->with($notification);
+    }
+
+    public function editSubAdmin($id)
+    {
+        $subAdminData = Auth::guard('admin')->user()->find($id);
+        return view('admin.subadmins.edit_sub_admin',compact('subAdminData'));
+    }
+    public function updateSubAdminData(Request $request,$id)
+    {
+//        return $request->all();
+        $adminData = Auth::guard('admin')->user()->find($id);
+        $request->validate([
+            'name'=>'required',
+            'mobile'=>'required|numeric',
+//            'email'=>'required|unique:admins'
+//            'image'=>'required|mimes:jpg,png,svg,jpeg',
+        ],[
+            'mobile.numeric'=>'Valid mobile is required',
+//            'email.required'=>'Unique email is required',
+        ]);
+        if ($request->hasFile('image')) {
+            if(!empty($request->old_image)){
+                @unlink(public_path('admin/images/sub_admin_photos/'.$adminData->image));
+            }
+            $image = $request->file('image');
+//            @unlink(public_path('admin/images/sub_admin_photos/'.Auth::guard('admin')->user()->image));
+            if ($image->isValid()) {
+                $imageName = rand(111, 99999).'.'.$image->getClientOriginalExtension();
+                $imagePath = public_path('admin/images/sub_admin_photos/'.$imageName);
+                Image::make($image)->save($imagePath);
+            }
+            $adminData->update([
+                'name'=>$request->name,
+//                'email'=>$request->email,
+                'mobile'=>$request->mobile,
+                'password'=>Hash::make($request->password),
+                'image'=>$imageName,
+                'status'=>1,
+                'type'=>'subadmin'
+            ]);
+        }else{
+            $adminData->update([
+                'name'=>$request->name,
+//                'email'=>$request->email,
+                'mobile'=>$request->mobile,
+                'password'=>Hash::make($request->password),
+                'status'=>1,
+                'type'=>'subadmin'
+            ]);
+        }
+
+        $notification = [
+            'alert-type'=>'info',
+            'message'=>'Sub Admin Info updated!!'
+        ];
+        return redirect()->route('subadmins')->with($notification);
     }
 
 }
