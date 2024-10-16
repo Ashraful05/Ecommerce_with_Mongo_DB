@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\AdminRole;
 use Illuminate\Http\Request;
 //use Auth;
 use Hash;
@@ -264,7 +265,76 @@ class AdminController extends Controller
 
     public function updateAdminRole(Request $request,$id)
     {
+        if($request->isMethod('post')){
+           $data = $request->all();
+//           return $data;
+//            if(isset($data['cms_pages']['view'])){
+//                $cms_pages_view = $data['cms_pages']['view'];
+//            }else{
+//                $cms_pages_view = 0;
+//            }
+//            if(isset($data['cms_pages']['edit'])){
+//                $cms_pages_edit = $data['cms_pages']['edit'];
+//            }else{
+//                $cms_pages_edit = 0;
+//            }
+//            if(isset($data['cms_pages']['full'])){
+//                $cms_pages_full = $data['cms_pages']['full'];
+//            }else{
+//                $cms_pages_full = 0;
+//            }
 
+            AdminRole::where('admin_id',$data['admin_id'])->delete();
+
+            foreach ($data as $key => $value){
+                if(isset($value['view'])){
+                    $view = $value['view'];
+                }else{
+                    $view = 0;
+                }
+                if(isset($value['edit'])){
+                    $edit = $value['edit'];
+                }else{
+                    $edit = 0;
+                }
+                if(isset($value['full'])){
+                    $full = $value['full'];
+                }else{
+                    $full = 0;
+                }
+            }
+
+            $adminRoleCount = AdminRole::where('admin_id',$data['admin_id'])->count();
+
+            if($adminRoleCount>0){
+                AdminRole::where('admin_id',$data['admin_id'])->update([
+                    'module'=>$key,
+                    'view_access'=>$view,
+                    'edit_access'=>$edit,
+                    'full_access'=>$full,
+                ]);
+            }else{
+                AdminRole::create([
+                   'admin_id'=>$data['admin_id'],
+                    'module'=>$key,
+                    'view_access'=>$view,
+                    'edit_access'=>$edit,
+                    'full_access'=>$full
+                ]);
+            }
+            $notification = [
+              'alert-type'=>'info',
+              'message'=>'Sub Admin Roles Updated!!'
+            ];
+            return redirect()->back()->with($notification);
+        }
+        $subAdminRoles = AdminRole::where('admin_id',$id)->get();
+//        return $subAdminRoles;
+        $subAdminDetails = Admin::where('_id',$id)->first();
+
+        $title = 'Update '.$subAdminDetails->name.' Sub Admin Roles/Permissions';
+
+        return view('admin.subadmins.update_admin_role',compact('subAdminRoles','subAdminDetails','title','id'));
     }
 
 }
